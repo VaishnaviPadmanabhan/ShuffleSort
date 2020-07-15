@@ -1,0 +1,208 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            :root{
+                --element-color: transparent;
+            }
+
+            html {
+                font-family: "Lucida Sans", sans-serif;
+            }
+
+            .header {
+                color: #000000; 
+                margin-top: 10px;
+                padding: 15px 0px 1px 0px;
+                text-align: center;
+            }            
+
+            .row {
+                display: flex;
+            }
+
+            .row:after {  
+                display: table;
+                content: "";
+                clear:both;
+            }
+
+            .side {
+                width: 20%;
+                background-color: #f1f1f1;
+                padding: 10px;
+                float: left;    
+                margin: 0 auto;        
+            }
+
+            .side button {
+                padding: 10px 0px;
+                margin-bottom: 7px;
+                background-color: #72c3dc;
+                color: #ffffff;
+                border: #72c3dc 1px solid;
+                border-radius: 10px;
+                width: 100%;
+            }
+
+            .main {
+                float: left;     
+                width: 80%;
+                background-color: white;
+            }  
+
+            .card
+            {
+                display: inline-block;
+                height: 200px;
+                width: 33.33%;
+                position: relative;
+                background-color: var(--element-color);
+            }
+
+            .card .value{
+                margin: 0;
+                font-size:30px;
+                font-family: sans-serif;
+                color: #ffffff;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-right: -50%;
+                transform: translate(-50%, -50%)
+            } 
+            
+            .footer {
+                background-color: #efefef;
+                color: #000000;
+                text-align: center;
+                font-size: 12px;
+                padding-top: 5px;
+                padding-bottom: 15px;
+            }
+            
+            @media screen and (max-width: 375px) {
+                .row { 
+                    flex-direction: column;
+                }
+                .side {
+                    width: 100%;
+                    margin: 0 50;
+                    background-color: #ffffff;
+                }
+                .side button {
+                    width: 30%;
+                }
+                .main {
+                    width:100%;
+                }
+                .card {
+                    width: 100%;
+                    height:75px; 
+                    font-size: 20px;
+                    background-color: #f1f1f1;
+                    border-left: 8px solid var(--element-color);
+                    margin-bottom: 5px;                    
+                }      
+                .card .value{
+                    color: #000000;
+                }        
+                .header {
+                    background-color: #333333;
+                    color: #ffffff;
+                }
+                .footer {
+                    background-color: #ffffff;
+                }
+            }
+
+        </style>
+        <script>
+            var cards = [{"1":"#6f98a8"}, {"2":"#2b8ead"}, {"3":"#2f454e"}, {"4":"#2b8ead"}, {"5":"#2f454e"}, {"6":"#bfbfbf"}, {"7":"#bfbfbf"}, {"8":"#6f98a8"}, {"9":"#2f454e"}];
+                var deck = new Array();
+                
+                function sort(){
+                    deck.sort( function(a, b) { 
+                        return a.Value - b.Value
+                    });
+                    renderDeck();
+                }
+
+                function getDeck()
+                {
+                    var deck = new Array();
+                    for(var x = 0; x < cards.length; x++)
+                    {
+                        var card = {Value: Object.keys(cards[x])[0], Class: Object.values(cards[x])[0]};
+                        deck.push(card);
+                    }
+                    return deck;
+                }
+
+                function shuffle()
+                {
+                    for (var i = 0; i < 1000; i++)
+                    {
+                        var location1 = Math.floor((Math.random() * deck.length));
+                        var location2 = Math.floor((Math.random() * deck.length));
+                        var tmp = deck[location1];
+
+                        deck[location1] = deck[location2];
+                        deck[location2] = tmp;
+                    }
+
+                    renderDeck();
+                }
+
+                function renderDeck()
+                {
+                    document.getElementById('deck').innerHTML = '';
+                    for(var i = 0; i < deck.length; i++)
+                    {
+                        var card = document.createElement("div");
+                        card.setAttribute("id","cardId");
+                        var value = document.createElement("div");
+                        card.className = "card";
+                        card.style.setProperty('--element-color', deck[i].Class);
+                        value.className = "value";                        
+                        value.innerHTML = deck[i].Value;
+                        card.appendChild(value);
+
+                        document.getElementById("deck").appendChild(card);
+                    }
+                }
+
+                function load()
+                {
+                    deck = getDeck();
+                    this.shuffle();
+                    this.renderDeck();
+                }
+
+                window.onload = load;
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h5>Shuffle and Sort</h5>
+        </div>
+        
+        <div class="row">
+            <div class="side">
+                <button class="btn" onclick="shuffle()">SHUFFLE</button>
+                <button class="btn" onclick="sort()">SORT</button>
+            </div>
+            <div class="main">
+                <div id="deck"></div> 
+            </div>             
+        </div>
+    
+        <div class="footer">
+            <p>Shuffle and sort by Vaishnavi P</p>
+        </div>
+    </body>
+</html>
